@@ -1,0 +1,7 @@
+src/vendor
+docker/storage
+
+.vscode
+
+.env
+.phpunit.*

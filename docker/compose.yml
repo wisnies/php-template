@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: php_template
+    container_name: app
+    restart: always
+    networks:
+      - php_template
+    working_dir: /var/www/
+    volumes:
+       - ../src:/var/www
+  server:
+    image: nginx:1.24.0-alpine
+    container_name: server
+    restart: always
+    networks:
+      - php_template
+    ports:
+      - 8000:80
+    volumes:
+      - ../src:/var/www
+      - ./nginx:/etc/nginx/conf.d
+
+networks:
+  php_template:
