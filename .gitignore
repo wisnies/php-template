@@ -1,5 +1,6 @@
 src/vendor
 docker/storage
+src/storage/cache
 
 .vscode
 

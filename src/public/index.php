@@ -2,17 +2,24 @@
 
 declare(strict_types=1);
 
-use App\Examples\ExampleClass;
-
+use Slim\Factory\AppFactory;
+use Slim\Views\TwigMiddleware;
+use Slim\Views\Twig;
+use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../configs/path_constants.php';
 
-$example = new ExampleClass(1, 2, 3, 4, 5);
+$dotenv = Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
 
-echo '<pre>';
-var_dump($example->returnNumber(x: 1));
-echo '</pre>';
+$container = require CONFIG_PATH . '/container.php';
+$router = require CONFIG_PATH . '/routes.php';
 
-echo '<pre>';
-var_dump($example());
-echo '</pre>';
+AppFactory::setContainer($container);
+$app = AppFactory::create();
+$router($app);
+
+$app->add(TwigMiddleware::create($app, $container->get(Twig::class)));
+
+$app->run();
